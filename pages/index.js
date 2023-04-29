@@ -200,7 +200,7 @@ const App = () => {
                     startIcon={<AccountBalanceWallet />}
                     onClick={connectWallet}
                 >
-                    Conectar billetera
+                    Conectar mi billetera
                 </Button>
             )}
 
