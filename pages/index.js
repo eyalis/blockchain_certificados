@@ -189,7 +189,7 @@ const App = () => {
         <StyledContainer maxWidth="sm">
             <Box mt={4}>
                 <Typography variant="h4" align="center">
-                    Certificados Universitarios
+                    Registro de Certificados Universitarios
                 </Typography>
             </Box>
 
