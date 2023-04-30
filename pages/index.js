@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { AccountBalanceWallet } from "@mui/icons-material";
+import QRCode from "qrcode.react";
+import Link from "@mui/material/Link";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
     display: "flex",
@@ -157,6 +159,9 @@ const App = () => {
     const emitirCertificado = async () => {
         if (contract) {
             try {
+
+                const gasLimit = 21000; // Ajusta el límite de gas a tu valor deseado
+
                 await contract.methods
                     .emitirCertificado(id, nombre, carrera)
                     .send({ from: account });
@@ -187,11 +192,30 @@ const App = () => {
 
     return (
         <StyledContainer maxWidth="sm">
+
             <Box mt={4}>
                 <Typography variant="h4" align="center">
                     Certificados Universitarios
                 </Typography>
             </Box>
+
+            <Box mt={4}>
+                <Typography
+                    variant="h6"
+                    align="center"
+                    sx={{ fontSize: "1rem", paddingBottom: "1rem" }}
+                >
+
+                </Typography>
+                <Box display="flex" justifyContent="center" alignItems="center" mb={4}>
+                    <Link href="https://testnet.bscscan.com/address/0x5fed74b8d1ff747f937469e3a712bdb5d046d37f">
+                        <QRCode
+                            value="https://testnet.bscscan.com/address/0x5fed74b8d1ff747f937469e3a712bdb5d046d37f"
+                        />
+                    </Link>
+                </Box>
+            </Box>
+
 
             {!web3 && (
                 <Button
