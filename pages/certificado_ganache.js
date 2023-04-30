@@ -127,7 +127,7 @@ const CONTRACT_ABI = [
         "type": "function"
     }
 ];
-const CONTRACT_ADDRESS = "0x5feD74B8d1fF747f937469e3a712bdB5D046D37F"; //acá poner la dirección del smart contract (bnb test)
+const CONTRACT_ADDRESS = "0xD043Ff0BAc82081fFCD3D73885c869d26a7898bc"; //acá poner la dirección de ethereum
 
 const App = () => {
     const [web3, setWeb3] = useState(null);
