@@ -1,7 +1,6 @@
 // pages/index.js
 
 import React, { useState } from "react";
-import Web3 from "web3";
 import {
     Container,
     TextField,
@@ -15,6 +14,8 @@ import { styled } from "@mui/system";
 import { AccountBalanceWallet } from "@mui/icons-material";
 import QRCode from "qrcode.react";
 import Link from "@mui/material/Link";
+
+import { connectWallet, emitirCertificado, verificarCertificado } from "./web3Utils";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
     display: "flex",
@@ -129,7 +130,6 @@ const CONTRACT_ABI = [
         "type": "function"
     }
 ];
-const CONTRACT_ADDRESS = "0x5feD74B8d1fF747f937469e3a712bdB5D046D37F"; //acá poner la dirección del smart contract (bnb test)
 
 const App = () => {
     const [web3, setWeb3] = useState(null);
@@ -141,22 +141,18 @@ const App = () => {
     const [carrera, setCarrera] = useState("");
     const [mensaje, setMensaje] = useState("");
 
-    const connectWallet = async () => {
-        if (window.ethereum) {
-            const web3Instance = new Web3(window.ethereum);
+    const handleConnectWallet = async () => {
+        try {
+            const { web3Instance, account, contractInstance } = await connectWallet();
             setWeb3(web3Instance);
-
-            const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-            setAccount(accounts[0]);
-
-            const contractInstance = new web3Instance.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+            setAccount(account);
             setContract(contractInstance);
-        } else {
-            alert("Por favor, instale MetaMask para usar esta aplicación");
+        } catch (error) {
+            alert(error.message);
         }
     };
 
-    const emitirCertificado = async () => {
+    const handleEmitirCertificado = async () => {
         if (contract) {
             try {
 
@@ -175,7 +171,7 @@ const App = () => {
         }
     };
 
-    const verificarCertificado = async () => {
+    const handleVerificarCertificado = async () => {
         if (contract) {
             try {
                 const certInfo = await contract.methods.verificarCertificado(id).call();
@@ -222,7 +218,7 @@ const App = () => {
                     variant="outlined"
                     color="primary"
                     startIcon={<AccountBalanceWallet />}
-                    onClick={connectWallet}
+                    onClick={handleConnectWallet}
                 >
                     Conectar billetera
                 </Button>
@@ -252,10 +248,10 @@ const App = () => {
                                 onChange={(e) => setCarrera(e.target.value)}
                             />
                             <Stack spacing={2} direction="row">
-                                <Button variant="contained" color="primary" onClick={emitirCertificado}>
+                                <Button variant="contained" color="primary" onClick={handleEmitirCertificado}>
                                     Emitir certificado
                                 </Button>
-                                <Button variant="contained" color="secondary" onClick={verificarCertificado}>
+                                <Button variant="contained" color="secondary" onClick={handleVerificarCertificado}>
                                     Verificar certificado
                                 </Button>
                             </Stack>
